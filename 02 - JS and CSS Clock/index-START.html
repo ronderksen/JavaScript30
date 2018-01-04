@@ -62,13 +62,73 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: right;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+
+    }
+
+    .min-hand {
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    .hour-hand {
+      left: 10%;
+      width: 40%;
+      background: darkred;
+    }
+
+    .second-hand {
+      background: white;
+      z-index: 2;
     }
 
   </style>
 
   <script>
+    const hoursHand = document.querySelector('.hour-hand');
+    const minutesHand = document.querySelector('.min-hand');
+    const secondsHand = document.querySelector('.second-hand');
 
+    function setHandPosition(hand, angle) {
+      hand.style.transform = `rotate(${angle + 90}deg)`;
+    }
 
+    function setHoursPosition(hours) {
+      const angle = hours / 12 * 360;
+      setHandPosition(hoursHand, angle);
+    }
+
+    function setMinutesPosition(minutes) {
+      const angle = minutes / 60 * 360;
+      setHandPosition(minutesHand, angle);
+    }
+
+    function setSecondsPosition(seconds) {
+      const angle = seconds / 60 * 360;
+      setHandPosition(secondsHand, angle);
+    }
+
+    function updateClock(now) {
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      setHoursPosition(hours);
+      setMinutesPosition(minutes);
+      setSecondsPosition(seconds);
+    }
+
+    function startClock() {
+      setInterval(() => {
+        const now = new Date();
+        updateClock(now);
+      }, 1000);
+    }
+
+    startClock();
   </script>
 </body>
 </html>
